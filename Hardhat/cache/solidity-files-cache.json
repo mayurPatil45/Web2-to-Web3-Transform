@@ -1,0 +1,40 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "C:\\Users\\Parth Shethji\\Desktop\\Coding\\Blockchain\\Hardhat\\contracts\\tokens.sol": {
+      "lastModificationDate": 1685258710126,
+      "contentHash": "292070bac0469c2f4971614032178b37",
+      "sourceName": "contracts/tokens.sol",
+      "solcConfig": {
+        "version": "0.8.18",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0 < 0.9.0"
+      ],
+      "artifacts": [
+        "token"
+      ]
+    }
+  }
+}
