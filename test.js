@@ -1,5 +1,4 @@
-const fs= require('fs')
-
+const fs = require('fs')
 
 const {
   GoogleGenerativeAI,
@@ -8,11 +7,7 @@ const {
 } = require("@google/generative-ai");
 
 const MODEL_NAME = "gemini-1.0-pro";
-const API_KEY = "AIzaSyBfEo7TBJGS6ZLnpckCyHtbkcuNSImsFkI";
-
-
-
-
+const API_KEY = process.env.Gemini_api;
 
 async function webScrape(url) {
   const genAI = new GoogleGenerativeAI(API_KEY);
@@ -43,9 +38,10 @@ async function webScrape(url) {
       threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
     },
   ];
-  
+
   const parts = [
-    {text: `Assume I am from the tech team of a web2 app hosted at ${url}
+    {
+      text: `Assume I am from the tech team of a web2 app hosted at ${url}
     
     (now onwards whenever I use the following words \"web app\" or \"app\" or \"web application\" or alike I am referring to the web2 app hosted at ${url}) 
     and I want to update my technology by integrating a smart contract in my web application. 
@@ -89,14 +85,11 @@ async function webScrape(url) {
 
   const responseText = result.response.text();
   const jsonResponse = JSON.parse(responseText);
-  
+
   console.log(jsonResponse);
   return jsonResponse;
   // console.log(responseText)
-
- 
 }
-
 
 async function code_generate(approachHeading, approachContent, additionalDetails) {
   const genAI = new GoogleGenerativeAI(API_KEY);
@@ -129,7 +122,8 @@ async function code_generate(approachHeading, approachContent, additionalDetails
   ];
 
   const parts = [
-        {text: `Develop a Solidity smart contract to implement the following approach for the web application:
+    {
+      text: `Develop a Solidity smart contract to implement the following approach for the web application:
         Approach Heading: ${approachHeading}
         
         Approach Content: ${approachContent}
@@ -168,7 +162,7 @@ Inspect the output and then check if there are any error while converting it to 
   //   {text: `Your task is to create a Solidity smart contract that integrates a specified approach into a web application. Below are the details of the approach, and you need to provide the corresponding Solidity code. Ensure that the generated code compiles without errors, follows best practices, and adheres to security considerations.
 
   //   Approach:
-    
+
   //   Heading: ${approachHeading}
   //   Content: ${approachContent}
   //   Additional Details: ${additionalDetails}
@@ -179,9 +173,9 @@ Inspect the output and then check if there are any error while converting it to 
   //   SPDX-License-Identifier: MIT
   //   Functionality:
   //   Create a 'transfer' function within the smart contract that allows the owner to transfer ownership to a specified address. Only the current owner should have the privilege to invoke this function.
-    
+
   //   Considerations:
-    
+
   //   Ensure that the Solidity code is robust and secure.
   //   Follow best practices for smart contract development.
   //   Output Format:
@@ -199,19 +193,19 @@ Inspect the output and then check if there are any error while converting it to 
   //     }
   // }
   // Inspect the output to ensure correctness. Handle any JSON conversion errors if they arise before returning the output.`}]
-  
-// I want the output  and  in following schema and make sure that there are no backticks involved give the output in precise schema below
-    const result = await model.generateContent({
-      contents: [{ role: "user", parts }],
-      generationConfig,
-      safetySettings,
-    });
-  
-    const responseText = result.response.text();
-    // const jsonResponse = JSON.parse(responseText);
-    // console.log(responseText);
-    // console.log(jsonResponse);
-    // return jsonResponse;
+
+  // I want the output  and  in following schema and make sure that there are no backticks involved give the output in precise schema below
+  const result = await model.generateContent({
+    contents: [{ role: "user", parts }],
+    generationConfig,
+    safetySettings,
+  });
+
+  const responseText = result.response.text();
+  // const jsonResponse = JSON.parse(responseText);
+  // console.log(responseText);
+  // console.log(jsonResponse);
+  // return jsonResponse;
 
   // const jsonResponse = JSON.parse(result.response.text);
   // console.log(jsonResponse);
@@ -263,10 +257,9 @@ async function doc_generate() {
     },
   ];
 
-  
-  
   const parts = [
-    {text: `Your task is to create code that can integrates solidity with  node.js application Here is my solidity code ${sourceCode}  understand all the functions that are used in this and then generate me code using ethers.js for functions one by one so that i can integrate it into my node js file. Use the following schema for output. The output is in json format.
+    {
+      text: `Your task is to create code that can integrates solidity with  node.js application Here is my solidity code ${sourceCode}  understand all the functions that are used in this and then generate me code using ethers.js for functions one by one so that i can integrate it into my node js file. Use the following schema for output. The output is in json format.
     Dont use any backslashes and all that conflicts with the structure of json. Keep the output stricly in json
     {
       "response": {
@@ -295,15 +288,11 @@ async function doc_generate() {
 
   const responseText = result.response.text();
   const jsonResponse = JSON.parse(responseText);
-  
+
   console.log(jsonResponse);
   return jsonResponse;
   // console.log(responseText)
-
- 
 }
-
-
 
 module.exports = { webScrape, code_generate, doc_generate };
 // webScrape("https://www.amazon.com/")
